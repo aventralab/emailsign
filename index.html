@@ -1290,24 +1290,39 @@
                 <div id="social" class="tab-content">
                     <div class="social-links">
                         <div class="form-group">
-                            <label for="linkedin">LinkedIn URL</label>
-                            <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                            <label for="linkedin">LinkedIn Username</label>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: #666; font-size: 14px;">linkedin.com/in/</span>
+                                <input type="text" id="linkedin" name="linkedin" placeholder="yourusername" style="flex: 1;">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="facebook">Facebook URL</label>
-                            <input type="url" id="facebook" name="facebook" placeholder="https://facebook.com/yourprofile">
+                            <label for="facebook">Facebook Username</label>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: #666; font-size: 14px;">facebook.com/</span>
+                                <input type="text" id="facebook" name="facebook" placeholder="yourusername" style="flex: 1;">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="instagram">Instagram URL</label>
-                            <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/yourprofile">
+                            <label for="instagram">Instagram Username</label>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: #666; font-size: 14px;">instagram.com/</span>
+                                <input type="text" id="instagram" name="instagram" placeholder="yourusername" style="flex: 1;">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="twitter">X (Twitter) URL</label>
-                            <input type="url" id="twitter" name="twitter" placeholder="https://x.com/yourprofile">
+                            <label for="twitter">X (Twitter) Username</label>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: #666; font-size: 14px;">x.com/</span>
+                                <input type="text" id="twitter" name="twitter" placeholder="yourusername" style="flex: 1;">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="github">GitHub URL</label>
-                            <input type="url" id="github" name="github" placeholder="https://github.com/yourprofile">
+                            <label for="github">GitHub Username</label>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: #666; font-size: 14px;">github.com/</span>
+                                <input type="text" id="github" name="github" placeholder="yourusername" style="flex: 1;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1882,11 +1897,11 @@
                 website: form.website.value || '',
                 location: form.location.value || '[Your Location]',
                 profileImage: form.profileImage.value || '',
-                linkedin: form.linkedin.value || '#',
-                facebook: form.facebook.value || '#',
-                instagram: form.instagram.value || '#',
-                twitter: form.twitter.value || '#',
-                github: form.github.value || '#'
+                linkedin: form.linkedin.value ? `https://linkedin.com/in/${form.linkedin.value}` : '#',
+                facebook: form.facebook.value ? `https://facebook.com/${form.facebook.value}` : '#',
+                instagram: form.instagram.value ? `https://instagram.com/${form.instagram.value}` : '#',
+                twitter: form.twitter.value ? `https://x.com/${form.twitter.value}` : '#',
+                github: form.github.value ? `https://github.com/${form.github.value}` : '#'
             };
 
             // Generate initials if no image is provided
@@ -1930,7 +1945,7 @@
                                     <tr>
                                         <td style="padding: 4px 0;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Website" class="contact-icon" style="${iconStyleClass}">
-                                            <a href="${data.website}" class="contact-link" style="${contactStyle}">${data.website.replace(/^https?:\/\//, '').replace(/\/.*$/, '')}</a>
+                                            <a href="${data.website.startsWith('http') ? data.website : 'https://' + data.website}" class="contact-link" style="${contactStyle}">${data.website}</a>
                                         </td>
                                     </tr>
                                     ` : ''}
@@ -1982,7 +1997,7 @@
                                     <tr>
                                         <td style="padding: 4px 0;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Website" class="contact-icon" style="${iconStyleClass}">
-                                            <a href="${data.website}" class="contact-link" style="${contactStyle}">${data.website.replace(/^https?:\/\//, '').replace(/\/.*$/, '')}</a>
+                                            <a href="${data.website.startsWith('http') ? data.website : 'https://' + data.website}" class="contact-link" style="${contactStyle}">${data.website}</a>
                                         </td>
                                     </tr>
                                     ` : ''}
@@ -2022,7 +2037,7 @@
                                     <tr>
                                         <td style="padding: 4px 0;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Website" class="contact-icon" style="${iconStyleClass}">
-                                            <a href="${data.website}" class="contact-link" style="${contactStyle}">${data.website.replace(/^https?:\/\//, '').replace(/\/.*$/, '')}</a>
+                                            <a href="${data.website.startsWith('http') ? data.website : 'https://' + data.website}" class="contact-link" style="${contactStyle}">${data.website}</a>
                                         </td>
                                     </tr>
                                     ` : ''}
@@ -2076,7 +2091,7 @@
                                     <tr>
                                         <td style="padding: 4px 0;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Website" class="contact-icon" style="${iconStyleClass}">
-                                            <a href="${data.website}" class="contact-link" style="${contactStyle}">${data.website.replace(/^https?:\/\//, '').replace(/\/.*$/, '')}</a>
+                                            <a href="${data.website.startsWith('http') ? data.website : 'https://' + data.website}" class="contact-link" style="${contactStyle}">${data.website}</a>
                                         </td>
                                     </tr>
                                     ` : ''}
@@ -2121,7 +2136,7 @@
                                     <tr>
                                         <td style="padding: 4px 0;">
                                             <img src="https://cdn-icons-png.flaticon.com/512/841/841364.png" alt="Website" class="contact-icon" style="${iconStyleClass}">
-                                            <a href="${data.website}" class="contact-link" style="${contactStyle}">${data.website.replace(/^https?:\/\//, '').replace(/\/.*$/, '')}</a>
+                                            <a href="${data.website.startsWith('http') ? data.website : 'https://' + data.website}" class="contact-link" style="${contactStyle}">${data.website}</a>
                                         </td>
                                     </tr>
                                     ` : ''}
