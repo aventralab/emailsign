@@ -2242,27 +2242,72 @@
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (file) {
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast('Image size should be less than 5MB');
-                    return;
+                if (file.size > 100 * 1024) {
+                    // Try to compress the image using a canvas
+                    const img = new Image();
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        img.onload = function() {
+                            // Create a canvas to resize/compress
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+                            // Optionally, resize if very large
+                            const maxDim = 300; // px, adjust as needed
+                            if (width > maxDim || height > maxDim) {
+                                if (width > height) {
+                                    height = Math.round(height * (maxDim / width));
+                                    width = maxDim;
+                                } else {
+                                    width = Math.round(width * (maxDim / height));
+                                    height = maxDim;
+                                }
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            // Try different quality levels to get under 100KB
+                            let quality = 0.8;
+                            let dataUrl = '';
+                            do {
+                                dataUrl = canvas.toDataURL('image/jpeg', quality);
+                                quality -= 0.1;
+                            } while (dataUrl.length > 100 * 1024 * 1.37 && quality > 0.3); // 1.37 is base64 size overhead
+                            if (dataUrl.length > 100 * 1024 * 1.37) {
+                                showToast('Image could not be compressed under 100KB. Please choose a smaller image.');
+                                return;
+                            }
+                            document.getElementById('imageUrl').value = dataUrl;
+                            updateImagePreview(dataUrl);
+                            debouncedUpdatePreview();
+                        };
+                        img.onerror = function() {
+                            showToast('Error loading the image for compression.');
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = function() {
+                        showToast('Error reading the image file');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    if (!file.type.startsWith('image/')) {
+                        showToast('Please upload an image file');
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageUrl = e.target.result;
+                        document.getElementById('imageUrl').value = imageUrl;
+                        updateImagePreview(imageUrl);
+                        debouncedUpdatePreview();
+                    };
+                    reader.onerror = function() {
+                        showToast('Error reading the image file');
+                    };
+                    reader.readAsDataURL(file);
                 }
-                
-                if (!file.type.startsWith('image/')) {
-                    showToast('Please upload an image file');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageUrl = e.target.result;
-                    document.getElementById('imageUrl').value = imageUrl;
-                    updateImagePreview(imageUrl);
-                    debouncedUpdatePreview();
-                };
-                reader.onerror = function() {
-                    showToast('Error reading the image file');
-                };
-                reader.readAsDataURL(file);
             }
         }
 
